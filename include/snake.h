@@ -13,15 +13,39 @@
 #define l 4
 #define d 5
 
+typedef struct s_body
+{
+	int		x;
+	int		y;
+	char	next_m;
+	char	now_m;
+	struct s_body	*next;
+	struct s_body	*prev;
+}	t_body;
+
+typedef struct s_snake
+{
+	char	move;
+	int		snake_len;
+	t_body	*body;
+}	t_snake;
+
 typedef struct s_game
 {
 	void		*mlx;
 	void		*screen;
+	int			f_counter;
+	t_snake		*snake;
 }	t_game;
 
 extern int move_dir;
+extern int g_x;
+extern int g_y;
 
 void	init_all(t_game *game);
-int	key_hook(int keycode, t_game *game);
+int		key_hook(int keycode, t_game *game);
+void	move_event(t_game *game);
+void	draw_snake(t_game *game, int color);
+
 
 #endif

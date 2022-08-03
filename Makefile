@@ -1,4 +1,4 @@
-CC			= gcc
+CC			= gcc -g
 MINILIBX	= minilibx/libmlx.a
 FLAGS		= #-Wall -Wextra -Werror
 LFLAGS		= -framework OpenGL -framework AppKit

@@ -2,8 +2,19 @@
 
 void	init_all(t_game *game)
 {
-	game->mlx = mlx_init();
+	t_snake	*snake;
+	snake = malloc(sizeof(t_snake));
+	game->mlx =  mlx_init();
 	game->screen = mlx_new_window(game->mlx, 800, 600, "SNAKE");
+	game->f_counter = 0;
+
+	snake->body = malloc(sizeof(t_body));
+	snake->body->next = NULL;
+	snake->body->prev = NULL;
+	snake->body->x = 0;
+	snake->body->y = 0;
+	snake->snake_len = 1;
+	game->snake = snake;
 }
 
 int	key_hook(int keycode, t_game *game)

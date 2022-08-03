@@ -1,36 +1,41 @@
 #include "../include/snake.h"
 
-int	g_x = 0;
-int	g_y = 0;
 int	move_dir = 0;
-int	counter = 0;
 
-void	draw_square(t_game *game, int x, int y)
+void	draw_snake(t_game *game, int color)
 {
-	for (int i = 0; i < 50; i++)
+	t_body	*body = game->snake->body;
+	for (int a = 0; a < game->snake->snake_len; a++)
 	{
-		for (int j = 0; j < 50; j++)
-			mlx_pixel_put(game->mlx, game->screen, x + j, y + i, 0x008000);
+		for (int i = 0; i < 50; i++)
+		{
+			for (int j = 0; j < 50; j++)
+				mlx_pixel_put(game->mlx, game->screen, body->x + j, body->y + i, color);
+		}
+		body = body->next;
 	}
+		
+}
+
+void	add_body(t_body *body)
+{
+	t_body	*tmp;
+	t_body	*new;
+	t_snake *new = malloc(sizeof(t_body));
+	while (tmp->next)
+		tmp = tmp->next;
+	new->prev = tmp;
+	new->next = NULL;
+	tmp->next = new;
+
 }
 
 int	update(t_game *game)
 {
-	counter++;
-	if (move_dir != 0 && counter >= 5000)
-	{
-		if (move_dir == r)
-			g_x += 50;
-		if (move_dir == l)
-			g_x -= 50;
-		if (move_dir == u)
-			g_y -= 50;
-		if (move_dir == d)
-			g_y += 50;
-		mlx_clear_window(game->mlx, game->screen);
-		draw_square(game, g_x, g_y);
-		counter = 0;
-	}
+	game->f_counter++;
+	if (move_dir != 0 && game->f_counter >= 5000)
+		move_event(game);
+	return (0);
 }
 
 int main(int argc, char **argv)
