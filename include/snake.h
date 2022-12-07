@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 # define SNAKE_H
 
-#include "../minilibx/mlx.h"
+#include "../mlx/mlx.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,8 +17,8 @@ typedef struct s_body
 {
 	int		x;
 	int		y;
-	char	next_m;
-	char	now_m;
+	int		next_x;
+	int		next_y;
 	struct s_body	*next;
 	struct s_body	*prev;
 }	t_body;
@@ -36,6 +36,7 @@ typedef struct s_game
 	void		*screen;
 	int			f_counter;
 	t_snake		*snake;
+	t_body		*last;
 }	t_game;
 
 extern int move_dir;
@@ -46,6 +47,6 @@ void	init_all(t_game *game);
 int		key_hook(int keycode, t_game *game);
 void	move_event(t_game *game);
 void	draw_snake(t_game *game, int color);
-
+void	add_body(t_body *body, t_game *game);
 
 #endif
