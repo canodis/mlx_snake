@@ -3,11 +3,12 @@ MINILIBX	= mlx/libmlx.a
 NAME		= snake
 SRCS 		= $(shell find src -name "*.c")
 OBJS		= $(SRCS:.c=.o)
+LFLAGS		= -framework OpenGL -framework AppKit
 
 all: $(NAME)
 
 $(NAME): $(MINILIBX) $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) mlx/libmlx.a -Lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+	$(CC) $(LFLAGS) $(OBJS) -o $(NAME) ./mlx/libmlx.a
 
 $(MINILIBX):
 	make -C mlx

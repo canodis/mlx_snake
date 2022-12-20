@@ -13,6 +13,10 @@
 #define l 4
 #define d 5
 
+#define WIDTH 800
+#define HEIGHT 600
+#define SSIZE 25
+
 typedef struct s_body
 {
 	int		x;
@@ -35,8 +39,12 @@ typedef struct s_game
 	void		*mlx;
 	void		*screen;
 	int			f_counter;
+	int			foodx;
+	int			foody;
 	t_snake		*snake;
 	t_body		*last;
+	int map[HEIGHT / SSIZE][WIDTH / SSIZE];
+	int	gameSpeed;
 }	t_game;
 
 extern int move_dir;
@@ -48,5 +56,7 @@ int		key_hook(int keycode, t_game *game);
 void	move_event(t_game *game);
 void	draw_snake(t_game *game, int color);
 void	add_body(t_body *body, t_game *game);
+int		randomRange(int min, int max);
+void	generate_food(t_game *game);
 
 #endif
