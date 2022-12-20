@@ -11,7 +11,7 @@ void	move_event(t_game *game)
 		body->next_y -= SSIZE;
 	if (move_dir == d)
 		body->next_y += SSIZE;
-	mlx_clear_window(game->mlx, game->screen);
-	draw_snake(game, 0x008000);
+	clear_image(game->data.addr);
+	draw_snake(game);
 	game->f_counter = 0;
 }
