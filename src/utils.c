@@ -48,9 +48,9 @@ void	add_body(t_body *body, t_game *game)
 
 void	generate_food(t_game *game)
 {
-	int randomx = randomRange(0, WIDTH / SSIZE - 1);
-	int randomy = randomRange(0, HEIGHT / SSIZE - 1);
-	if (game->map[randomy][randomx] == 1)
+	int randomx = randomRange(0, WIDTH / SSIZE);
+	int randomy = randomRange(0, HEIGHT / SSIZE);
+	if (game->map[randomy][randomx] == 1 || randomx * SSIZE >= WIDTH - SSIZE || randomx * SSIZE < SSIZE || randomy * SSIZE >= HEIGHT - SSIZE || randomy * SSIZE < SSIZE)
 	{
 		generate_food(game);
 		return ;

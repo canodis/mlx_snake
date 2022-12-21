@@ -53,12 +53,15 @@ typedef struct s_game
 	t_data		data;
 	int map[HEIGHT / SSIZE][WIDTH / SSIZE];
 	bool		speed_up;
+	bool		discoMode;
 	int	gameSpeed;
 }	t_game;
 
 extern int move_dir;
 extern int	head_color;
 extern int	body_color;
+extern int	score;
+extern int	bg_color;
 
 void	init_all(t_game *game);
 int		key_hook(int keycode, t_game *game);
