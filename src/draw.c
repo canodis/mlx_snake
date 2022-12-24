@@ -1,56 +1,79 @@
 #include "../include/snake.h"
 
-void	clear_image(int *addr)
+void	draw_object(int *addr, int x, int y, int color, bool is)
 {
-	for (int y = 0; y < HEIGHT; y++)
+	for (int i = 0; i < SSIZE; i++)
 	{
-		for (int x = 0; x < WIDTH; x++)
+		for (int j = 0; j < SSIZE; j++)
 		{
-			if ((y == 0 || y == SSIZE) || (x == 0 || x == SSIZE))
-				addr[y * WIDTH + x] = 0;
-			else if (y < SSIZE) 
-				addr[y * WIDTH + x] = 0x4D4C38;
-			else if (x < SSIZE)
-				addr[y * WIDTH + x] = 0x4D4C38;
-			else if (y > HEIGHT - SSIZE)
-				addr[y * WIDTH + x] = 0x4D4C38;
-			else if (x > WIDTH - SSIZE)
-				addr[y * WIDTH + x] = 0x4D4C38;
+			if (is)
+			{
+				if (i == 0 || i == SSIZE - 1 || j == 0 || j == SSIZE - 1)
+					addr[(y + i) * WIDTH + x + j] = 0;
+				else
+					addr[(y + i) * WIDTH + x + j] = color;
+			}
 			else
-				addr[y * WIDTH + x] = bg_color;
+				addr[(y + i) * WIDTH + x + j] = color;
+		}
+	}
+		
+}
+
+void	clear_image(t_game *game)
+{
+	int	*addr = game->data.addr;
+	for (int y = 0; y < HEIGHT / SSIZE; y++)
+	{
+		for (int x = 0; x < WIDTH / SSIZE; x++)
+		{
+			if (game->map[y][x] == 1)
+				draw_object(addr, x * SSIZE, y * SSIZE, 0x4D4C38, true);
+			else if (game->map[y][x] == 0)
+				draw_object(addr, x * SSIZE, y * SSIZE, bg_color, false);
+			else if (game->map[y][x] == 2)
+				draw_object(addr, x * SSIZE, y * SSIZE, 0xFF0000, true);
 		}
 	}
 }
 
-void	reset_game(t_game *game)
+void	draw_snake(t_game *game, t_body *body, int a)
 {
-	sleep(1);
-	t_snake *snake = game->snake;
-	t_body	*body = snake->body;
-	body = body->next->next;
-	while (body)
+	for (int y = 0; y < SSIZE; y++)
 	{
-		free(body->prev);
-		body = body->next;
-	}
-	snake->body->next = NULL;
-	snake->body->prev = NULL;
-	snake->body->x = WIDTH / 2;
-	snake->body->y = HEIGHT / 2;
-	snake->body->next_x = WIDTH / 2;
-	snake->body->next_y = HEIGHT / 2;
-	snake->snake_len = 1;
-	game->snake = snake;
-	game->gameSpeed = 5000;
-	init_map(game, HEIGHT / SSIZE, WIDTH / SSIZE);
-	add_body(game->snake->body, game);
-	add_body(game->snake->body, game);
-	generate_food(game);
-	move_dir = r;
-	
+		for (int x = 0; x < SSIZE; x++)
+		{
+			if (a == 0)
+			{
+				if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+					game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
+				else
+					game->data.addr[(y + body->y) * WIDTH + x + body->x] = head_color;
+			}
+			else
+			{
+				if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+					game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
+				else
+					game->data.addr[(y + body->y) * WIDTH + x + body->x] = body_color;
+			}
+		}
+	}	
 }
 
-void	draw_snake(t_game *game)
+void	draw_food(t_game *game)
+{
+	for (int y = 0; y < SSIZE; y++)
+	{
+		for (int x = 0; x < SSIZE; x++)
+			if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0;
+			else
+				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0xFF0000;
+	}
+}
+
+void	draw(t_game *game)
 {
 	t_body	*body = game->snake->body;
 	t_body	*lastToFirst = game->last;
@@ -65,35 +88,14 @@ void	draw_snake(t_game *game)
 		game->map[body->y / SSIZE][body->x / SSIZE] = 0;
 		body->x = body->next_x;
 		body->y = body->next_y;
-		if (game->map[body->y / SSIZE][body->x / SSIZE] == 1)
+		if (game->map[body->y / SSIZE][body->x / SSIZE] == 1 ||
+			game->map[body->y / SSIZE][body->x / SSIZE] == 7)
 		{
 			reset_game(game);
 			return ;
 		}
-		game->map[body->y / SSIZE][body->x / SSIZE] = 1;
-		if (body->x > WIDTH - SSIZE * 2 || body->x < SSIZE || body->y > HEIGHT - SSIZE * 2 || body->y < SSIZE)
-		{
-			reset_game(game);
-			return ;
-		}
-		for (int y = 0; y < SSIZE; y++)
-			for (int x = 0; x < SSIZE; x++)
-			{
-				if (a == 0)
-				{
-					if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
-						game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
-					else
-						game->data.addr[(y + body->y) * WIDTH + x + body->x] = head_color;
-				}
-				else
-				{
-					if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
-						game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
-					else
-						game->data.addr[(y + body->y) * WIDTH + x + body->x] = body_color;
-				}
-			}
+		game->map[body->y / SSIZE][body->x / SSIZE] = 7;
+		draw_snake(game, body, a);
 		if (body->x == game->foodx && body->y == game->foody)
 		{
 			add_body(game->snake->body, game);
@@ -104,17 +106,8 @@ void	draw_snake(t_game *game)
 				bg_color += randomRange(10000, 1000000);
 				score++;
 			}
-			game->gameSpeed -= 10;
 		}
 		body = body->next;
-	}
-	for (int y = 0; y < SSIZE; y++)
-	{
-		for (int x = 0; x < SSIZE; x++)
-			if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
-				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0;
-			else
-				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0xFF0000;
 	}
 	mlx_put_image_to_window(game->mlx, game->screen, game->data.img, 0, 0);
 }

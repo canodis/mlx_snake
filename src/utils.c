@@ -50,7 +50,8 @@ void	generate_food(t_game *game)
 {
 	int randomx = randomRange(0, WIDTH / SSIZE);
 	int randomy = randomRange(0, HEIGHT / SSIZE);
-	if (game->map[randomy][randomx] == 1 || randomx * SSIZE >= WIDTH - SSIZE || randomx * SSIZE < SSIZE || randomy * SSIZE >= HEIGHT - SSIZE || randomy * SSIZE < SSIZE)
+	if (game->map[randomy][randomx] == 1 || randomx * SSIZE >= WIDTH - SSIZE || randomx * SSIZE < SSIZE || 
+		randomy * SSIZE >= HEIGHT - SSIZE || randomy * SSIZE < SSIZE || game->map[randomy][randomx] == 7)
 	{
 		generate_food(game);
 		return ;
@@ -66,4 +67,31 @@ int	randomRange(int min, int max)
 	gettimeofday(&t, 0);
 	srand(t.tv_sec + t.tv_usec);
 	return (rand() % (max - min + 1) + min);
+}
+
+void	reset_game(t_game *game)
+{
+	sleep(1);
+	t_snake *snake = game->snake;
+	t_body	*body = snake->body;
+	body = body->next->next;
+	while (body)
+	{
+		free(body->prev);
+		body = body->next;
+	}
+	snake->body->next = NULL;
+	snake->body->prev = NULL;
+	snake->body->x = WIDTH / 2;
+	snake->body->y = HEIGHT / 2;
+	snake->body->next_x = WIDTH / 2;
+	snake->body->next_y = HEIGHT / 2;
+	snake->snake_len = 1;
+	game->snake = snake;
+	game->gameSpeed = 5000;
+	init_map(game, HEIGHT / SSIZE, WIDTH / SSIZE);
+	add_body(game->snake->body, game);
+	add_body(game->snake->body, game);
+	generate_food(game);
+	move_dir = r;
 }

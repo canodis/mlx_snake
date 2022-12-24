@@ -1,20 +1,27 @@
-CC			= gcc -g
-MINILIBX	= mlx/libmlx.a
+CC			= gcc
 NAME		= snake
 SRCS 		= $(shell find src -name "*.c")
 OBJS		= $(SRCS:.c=.o)
-LFLAGS		= -framework OpenGL -framework AppKit    # FOR MAC
+OS 			= $(shell uname)
 
-all: $(NAME)
+ifeq ($(OS),Mac)
+	MLXDIR = mlx-mac
+	CC += -framework OpenGL -framework AppKit
+else
+	MLXDIR = mlx-linux
+endif
 
-$(NAME): $(MINILIBX) $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o $(NAME) ./mlx/libmlx.a    # FOR MAC
+all: MINILIBX $(NAME)
 
-# $(NAME): $(MINILIBX) $(OBJS)
-# 	$(CC) $(OBJS) -o $(NAME) mlx/libmlx.a -Lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz     # FOR LINUX
+$(NAME) : $(OBJS)
+ifeq ($(OS), Linux)
+	$(CC) $(OBJS) -o $(NAME) $(MLXDIR)/libmlx.a -Lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+else
+	$(CC) $(OBJS) -o $(NAME) $(MLXDIR)/libmlx.a
+endif
 
-$(MINILIBX):
-	make -C mlx
+MINILIBX:
+	make -C $(MLXDIR) --silent
 	@echo "MINILIBX compiled !"
 
 clean:
@@ -22,7 +29,7 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
-	@make clean -C mlx
+	@make clean -C $(MLXDIR)
 
 re: clean all
 

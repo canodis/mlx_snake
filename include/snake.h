@@ -1,7 +1,15 @@
 #ifndef SNAKE_H
 # define SNAKE_H
 
-#include "../mlx/mlx.h"
+#if OS == Linux
+	#include "../mlx-linux/mlx.h"
+	#define GAMESPEED 5000
+	#define GG 666
+#else
+	#include "../mlx-mac/mlx.h"
+	#define GAMESPEED 1000
+	#define GG 777
+#endif
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -51,10 +59,10 @@ typedef struct s_game
 	t_snake		*snake;
 	t_body		*last;
 	t_data		data;
-	int map[HEIGHT / SSIZE][WIDTH / SSIZE];
 	bool		speed_up;
 	bool		discoMode;
 	int	gameSpeed;
+	int map[HEIGHT / SSIZE][WIDTH / SSIZE];
 }	t_game;
 
 extern int move_dir;
@@ -66,14 +74,15 @@ extern int	bg_color;
 void	init_all(t_game *game);
 int		key_hook(int keycode, t_game *game);
 void	move_event(t_game *game);
-void	draw_snake(t_game *game);
+void	draw(t_game *game);
 void	add_body(t_body *body, t_game *game);
 int		randomRange(int min, int max);
 void	generate_food(t_game *game);
 void	printmap(t_game *game);
-void	clear_image(int *addr);
+void	clear_image(t_game *game);
 void	free_all(t_game *game);
 int		key_up(int keycode, t_game *game);
 void	init_map(t_game *game, int height, int width);
+void	reset_game(t_game *game);
 
 #endif

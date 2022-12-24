@@ -5,7 +5,12 @@ void	init_map(t_game *game, int height, int width)
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
-			game->map[y][x] = 0;
+		{
+			if (y == 0 || x == 0 || y == height - 1 || x == width - 1)
+				game->map[y][x] = 1;
+			else
+				game->map[y][x] = 0;
+		}
 	}
 }
 
@@ -28,7 +33,7 @@ void	init_all(t_game *game)
 	snake->body->next_y = HEIGHT / 2;
 	snake->snake_len = 1;
 	game->snake = snake;
-	game->gameSpeed = 1000;
+	game->gameSpeed = GAMESPEED;
 	init_map(game, HEIGHT / SSIZE, WIDTH / SSIZE);
 	game->data.img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data.addr = (int *)mlx_get_data_addr(game->data.img, &a, &a, &a);

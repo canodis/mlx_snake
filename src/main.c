@@ -9,9 +9,9 @@ int	bg_color = 0;
 int	update(t_game *game)
 {
 	if (game->speed_up)
-		game->gameSpeed = 500;
+		game->gameSpeed = GAMESPEED / 2;
 	else
-		game->gameSpeed = 1000;
+		game->gameSpeed = GAMESPEED;
 	game->f_counter++;
 	if (move_dir != 0 && game->f_counter >= game->gameSpeed)
 	{
