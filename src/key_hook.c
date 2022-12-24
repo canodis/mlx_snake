@@ -4,13 +4,13 @@ int	key_hook(int keycode, t_game *game)
 {
 	if (keycode == 53)
 		free_all(game);
-	if (keycode == 0)
+	if (keycode == 0 && move_dir != r)
 		move_dir = l;
-	if (keycode == 1)
+	if (keycode == 1 && move_dir != u)
 		move_dir = d;
-	if (keycode == 2)
+	if (keycode == 2 && move_dir != l)
 		move_dir = r;
-	if (keycode == 13)
+	if (keycode == 13 && move_dir != d)
 		move_dir = u;
 	if (keycode == 12)
 	{

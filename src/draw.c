@@ -6,7 +6,9 @@ void	clear_image(int *addr)
 	{
 		for (int x = 0; x < WIDTH; x++)
 		{
-			if (y < SSIZE) 
+			if (y == 0 || y % SSIZE == 0 || x == 0 || x % SSIZE == 0)
+				addr[y * WIDTH + x] = 0;
+			else if (y < SSIZE) 
 				addr[y * WIDTH + x] = 0x4D4C38;
 			else if (x < SSIZE)
 				addr[y * WIDTH + x] = 0x4D4C38;
@@ -78,9 +80,19 @@ void	draw_snake(t_game *game)
 			for (int x = 0; x < SSIZE; x++)
 			{
 				if (a == 0)
-					game->data.addr[(y + body->y) * WIDTH + x + body->x] = head_color;
+				{
+					if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+						game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
+					else
+						game->data.addr[(y + body->y) * WIDTH + x + body->x] = head_color;
+				}
 				else
-					game->data.addr[(y + body->y) * WIDTH + x + body->x] = body_color;
+				{
+					if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+						game->data.addr[(y + body->y) * WIDTH + x + body->x] = 0;
+					else
+						game->data.addr[(y + body->y) * WIDTH + x + body->x] = body_color;
+				}
 			}
 		if (body->x == game->foodx && body->y == game->foody)
 		{
@@ -99,7 +111,10 @@ void	draw_snake(t_game *game)
 	for (int y = 0; y < SSIZE; y++)
 	{
 		for (int x = 0; x < SSIZE; x++)
-			game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0xFF0000;
+			if (y == 0 || y == SSIZE - 1 || x == 0 || x == SSIZE - 1)
+				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0;
+			else
+				game->data.addr[(y + game->foody) * WIDTH + x + game->foodx] = 0xFF0000;
 	}
 	mlx_put_image_to_window(game->mlx, game->screen, game->data.img, 0, 0);
 }
