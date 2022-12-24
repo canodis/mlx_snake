@@ -6,7 +6,7 @@ void	clear_image(int *addr)
 	{
 		for (int x = 0; x < WIDTH; x++)
 		{
-			if (y == 0 || y % SSIZE == 0 || x == 0 || x % SSIZE == 0)
+			if ((y == 0 || y == SSIZE) || (x == 0 || x == SSIZE))
 				addr[y * WIDTH + x] = 0;
 			else if (y < SSIZE) 
 				addr[y * WIDTH + x] = 0x4D4C38;
