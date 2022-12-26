@@ -17,12 +17,11 @@ void	init_map(t_game *game, int height, int width)
 void	init_all(t_game *game)
 {
 	int a;
-
 	t_snake	*snake;
+
 	snake = malloc(sizeof(t_snake));
 	game->mlx =  mlx_init();
 	game->screen = mlx_new_window(game->mlx, WIDTH, HEIGHT, "SNAKE");
-	game->last = NULL;
 	game->f_counter = 0;
 	snake->body = malloc(sizeof(t_body));
 	snake->body->next = NULL;
@@ -33,6 +32,7 @@ void	init_all(t_game *game)
 	snake->body->next_y = HEIGHT / 2;
 	snake->snake_len = 1;
 	game->snake = snake;
+	game->last = NULL;
 	game->gameSpeed = GAMESPEED;
 	init_map(game, HEIGHT / SSIZE, WIDTH / SSIZE);
 	game->data.img = mlx_new_image(game->mlx, WIDTH, HEIGHT);

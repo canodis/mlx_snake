@@ -10,6 +10,7 @@
 	#define GAMESPEED 1000
 	#define GG 777
 #endif
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -61,11 +62,11 @@ typedef struct s_game
 	t_data		data;
 	bool		speed_up;
 	bool		discoMode;
-	int	gameSpeed;
-	int map[HEIGHT / SSIZE][WIDTH / SSIZE];
+	int			gameSpeed;
+	int			map[HEIGHT / SSIZE][WIDTH / SSIZE];
 }	t_game;
 
-extern int move_dir;
+extern int	move_dir;
 extern int	head_color;
 extern int	body_color;
 extern int	score;

@@ -5,7 +5,7 @@ int	key_hook(int keycode, t_game *game)
 	if (GG == 777)
 	{
 		if (keycode == 53)
-		free_all(game);
+			free_all(game);
 		if (keycode == 0 && move_dir != r)
 			move_dir = l;
 		if (keycode == 1 && move_dir != u)
@@ -73,6 +73,5 @@ int	key_up(int keycode, t_game *game)
 			game->speed_up = false;
 		}
 	}
-		
 	return (0);
 }

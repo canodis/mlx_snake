@@ -88,10 +88,10 @@ void	reset_game(t_game *game)
 	snake->body->next_y = HEIGHT / 2;
 	snake->snake_len = 1;
 	game->snake = snake;
-	game->gameSpeed = 5000;
 	init_map(game, HEIGHT / SSIZE, WIDTH / SSIZE);
 	add_body(game->snake->body, game);
 	add_body(game->snake->body, game);
 	generate_food(game);
 	move_dir = r;
+	clear_image(game);
 }

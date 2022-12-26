@@ -17,7 +17,10 @@ int	update(t_game *game)
 	{
 		move_event(game);
 		if (game->discoMode)
+		{
 			bg_color += 2000000000;
+			clear_image(game);
+		}
 	}
 	return (0);
 }
@@ -25,9 +28,12 @@ int	update(t_game *game)
 int main(int argc, char **argv)
 {
 	t_game	game;
+
 	init_all(&game);
 	mlx_hook(game.screen, 2, 1, key_hook, &game);
 	mlx_hook(game.screen, 3, 2, key_up, &game);
 	mlx_loop_hook(game.mlx, update, &game);
+	clear_image(&game);
+	score = 9;
 	mlx_loop(game.mlx);
 }

@@ -1,4 +1,4 @@
-CC			= gcc
+CC			= gcc -g
 NAME		= snake
 SRCS 		= $(shell find src -name "*.c")
 OBJS		= $(SRCS:.c=.o)
