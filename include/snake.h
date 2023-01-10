@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 # define SNAKE_H
 
-#if OS == Linux
+#if CAN == 1
 	#include "../mlx-linux/mlx.h"
 	#define GAMESPEED 5000
 	#define GG 666

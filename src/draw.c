@@ -76,6 +76,7 @@ void	draw(t_game *game)
 	t_body	*lastToFirst = game->last;
 	int	xx = game->last->x;
 	int	yy = game->last->y;
+	draw_object(game->data.addr, xx, yy, bg_color, false);
 	while (lastToFirst && lastToFirst->prev)
 	{
 		lastToFirst->next_x = lastToFirst->prev->x;
@@ -105,11 +106,11 @@ void	draw(t_game *game)
 				bg_color += randomRange(10000, 1000000);
 				score++;
 				clear_image(game);
+				draw_object(game->data.addr, xx, yy, bg_color, false);
 			}
 		}
 		body = body->next;
 	}
-	draw_object(game->data.addr, xx, yy, bg_color, false);
 	draw_food(game);
 	mlx_put_image_to_window(game->mlx, game->screen, game->data.img, 0, 0);
 }
