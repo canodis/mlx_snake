@@ -4,7 +4,7 @@ SRCS 		= $(shell find src -name "*.c")
 OBJS		= $(SRCS:.c=.o)
 OS 			= $(shell uname)
 
-ifeq ($(OS),Mac)
+ifeq ($(OS), Darwin)
 	MLXDIR = mlx-mac
 	CC += -framework OpenGL -framework AppKit
 else
